@@ -1,40 +1,47 @@
 class HandleForm {
     // Tout les champs du formulaire
     fields = {
-      first: null,
-      last: null,
-      email: null,
-      birthdate: null,
-      quantity: null,
-      location: null,
-      checkbox1: document.getElementById('checkbox1').checked,
-      checkbox2: document.getElementById('checkbox2').checked,
+      first: {
+        value: null,
+        regex: /^[a-zA-Z]{2,}$/,
+        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom."
+      },
+      last: {
+        value: null,
+        regex: /^[a-zA-Z]{2,}$/,
+        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+      },
+      email: {
+        value: null,
+        regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+        errorText: "Veuillez entrer une adresse email valide.",
+      },
+      birthdate: {
+        value: null,
+        regex: /^\d{4}-\d{2}-\d{2}$/,
+        errorText: "Veuillez ajouter une date de naissance valide."
+      },
+      quantity: {
+        value: null,
+        regex: /^\d+$/,
+        errorText: "Veuillez indiquer le nombre de participation au tournoi.",
+      },
+      location: {
+        value: null,
+        regex: null,
+        errorText: "Veuillez indiquer la ville de votre choix."
+      },
+      checkbox1: {
+        value: document.getElementById('checkbox1').checked,
+        regex: null,
+        errorText: "Vous devez vérifier que vous acceptez les termes et conditions.",
+      },
+      checkbox2: {
+        value: document.getElementById('checkbox2').checked,
+        regex: null,
+        errorText: "",
+      }
     }
-
-    // Message d'erreur
-    errorMessage = {
-      first: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
-      last: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
-      email: "Veuillez entrer une adresse email valide.",
-      birthdate: "Veuillez ajouter une date de naissance.",
-      quantity: "Veuillez indiquer le nombre de participation au tournoi.",
-      checkbox1: "Vous devez vérifier que vous acceptez les termes et conditions.",
-      checkbox2: "",
-      location: "Veuillez indiquer la ville de votre choix."
-    }
-
-    // Regex pour chaque champs du formulaire
-    regEx = {
-      first: /^[a-zA-Z]{2,}$/,
-      last: /^[a-zA-Z]{2,}$/,
-      email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-      birthdate: /^\d{4}-\d{2}-\d{2}$/,
-      quantity: /^\d+$/,
-      location: null,
-      checkbox1: null,
-      checkbox2: null,
-    }
-  
     constructor(form) {
       this.form = form
       /* Boucle sur l'objet qui contient tout les id/name du formulaire pour pouvoir ensuite les manipuler a chaque changement */
@@ -43,13 +50,13 @@ class HandleForm {
         switch(key){
           case 'checkbox1': 
           case 'checkbox2': 
-            new FormField(element, this.regEx[key], this.handleCheckbox.bind(this))
+            new FormField(element, this.fields[key].regex, this.handleCheckbox.bind(this))
             break
           case 'location':
-            new FormField(element, this.regEx[key], this.handleRadio.bind(this))
+            new FormField(element, this.fields[key].regex, this.handleRadio.bind(this))
             break
           default:
-            new FormField(element, this.regEx[key], this.checkRegex.bind(this))
+            new FormField(element, this.fields[key].regex, this.checkRegex.bind(this))
             break
         }
       }
@@ -57,13 +64,10 @@ class HandleForm {
         e.preventDefault()
         let canSubmit = true
         for (let key in this.fields){
-          if (this.fields[key] === null || (key === 'checkbox1' && !this.fields[key])){
+          if (this.fields[key].value === null || (key === 'checkbox1' && !this.fields[key].value)){
+            console.log(this.fields[key])
             canSubmit = false
-            let target = `input[id="${key}"]`
-            if (key === 'location'){ //L'id de "location" a un chiffre après alors que le "name" non et inverse pour le checkbox
-              target = `input[name="${key}"]` 
-            }
-            const element = document.querySelector(target).parentNode
+            const element = document.querySelector(`input[name="${key}"]`).parentNode
             this.addError(key, element)
           }
         }
@@ -73,13 +77,11 @@ class HandleForm {
           modalValid.style.display = "flex"
           console.log(this.fields)
         }
-  
       })
     }
 
-
   handleRadio(e){
-    this.fields.location = e.target.value
+    this.fields.location.value = e.target.value
     this.removeAttribute(e.target.parentNode)
   }
     
@@ -92,14 +94,14 @@ class HandleForm {
         this.removeAttribute(parent)
       }
     }
-    this.fields[id] = checked
+    this.fields[id].value = checked
   }
 
   checkRegex(e, reg) {
     const { value, id, parentNode: parent} = e.target
     this.removeAttribute(parent)
     if (reg.test(value)) {
-      this.fields[id] = value
+      this.fields[id].value = value
     } else {
       this.addError(id, e.target.parentNode)
     }
@@ -111,9 +113,9 @@ class HandleForm {
   }
   
   addError(id, element){
-    this.fields[id] = null
+    this.fields[id].value = null
     element.setAttribute('data-error-visible', true)
-    element.setAttribute('data-error', this.errorMessage[id])
+    element.setAttribute('data-error', this.fields[id].errorText)
   }
 
 }
