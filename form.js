@@ -101,6 +101,13 @@ class HandleForm {
     const { value, id, parentNode: parent} = e.target
     this.removeAttribute(parent)
     if (reg.test(value)) {
+      if (id === "birthdate"){
+        const time = new Date(value).getTime()
+        if (time > Date.now()) {
+          this.addError(id, e.target.parentNode)
+          return
+        }
+      }
       this.fields[id].value = value
     } else {
       this.addError(id, e.target.parentNode)
