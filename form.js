@@ -43,20 +43,22 @@ class HandleForm {
       }
     }
     constructor(form) {
-      this.form = form
       /* Boucle sur l'objet qui contient tout les id/name du formulaire pour pouvoir ensuite les manipuler a chaque changement */
       for (let key in this.fields){ 
         const element = document.querySelector(`input[name="${key}"]`).parentNode
         switch(key){
           case 'checkbox1': 
           case 'checkbox2': 
-            new FormField(element, this.fields[key].regex, this.handleCheckbox.bind(this))
+            this.onChange(element, this.fields[key].regex, this.handleCheckbox.bind(this))
             break
           case 'location':
-            new FormField(element, this.fields[key].regex, this.handleRadio.bind(this))
+            this.onChange(element, this.fields[key].regex, this.handleRadio.bind(this))
+            break
+          case 'birthdate': 
+          this.onChange(element, this.fields[key].regex, this.handleDate.bind(this))
             break
           default:
-            new FormField(element, this.fields[key].regex, this.checkRegex.bind(this))
+            this.onChange(element, this.fields[key].regex, this.checkRegex.bind(this))
             break
         }
       }
@@ -65,7 +67,6 @@ class HandleForm {
         let canSubmit = true
         for (let key in this.fields){
           if (this.fields[key].value === null || (key === 'checkbox1' && !this.fields[key].value)){
-            console.log(this.fields[key])
             canSubmit = false
             const element = document.querySelector(`input[name="${key}"]`).parentNode
             this.addError(key, element)
@@ -75,10 +76,14 @@ class HandleForm {
           e.target.style.display = 'none'
           const modalValid = document.querySelector('.modal-valid')
           modalValid.style.display = "flex"
-          console.log(this.fields)
+          Object.keys(this.fields).forEach((key) => console.log({[key]: this.fields[key].value}))
         }
       })
     }
+
+  onChange(element, regex, handleField){
+    element.addEventListener('change', (e) => handleField(e, regex))
+  }
 
   handleRadio(e){
     this.fields.location.value = e.target.value
@@ -101,16 +106,25 @@ class HandleForm {
     const { value, id, parentNode: parent} = e.target
     this.removeAttribute(parent)
     if (reg.test(value)) {
-      if (id === "birthdate"){
-        const time = new Date(value).getTime()
-        if (time > Date.now()) {
-          this.addError(id, e.target.parentNode)
-          return
-        }
-      }
       this.fields[id].value = value
     } else {
       this.addError(id, e.target.parentNode)
+    }
+  }
+
+  handleDate(e, reg){
+    const {value, id, parentNode: parent} = e.target
+    this.removeAttribute(parent)
+    if (reg.test(value)){
+      const birth = new Date(value).getTime()
+      const now = Date.now()
+      if (birth >= now){
+        this.addError(id, parent)
+      } else {
+        this.fields[id].value = new Date(value)
+      }
+    } else {
+      this.addError(id, parent)
     }
   }
   
@@ -127,11 +141,6 @@ class HandleForm {
 
 }
 
-class FormField{
-  constructor(element, regex, handleField){
-    element.addEventListener('change', (e) => handleField(e, regex))
-  }
-}
 
 const form = document.querySelector('form');
 new HandleForm(form)
