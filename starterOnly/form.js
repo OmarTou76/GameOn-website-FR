@@ -1,5 +1,5 @@
 class HandleForm {
-
+    // Tout les champs du formulaire
     fields = {
       first: null,
       last: null,
@@ -11,6 +11,7 @@ class HandleForm {
       checkbox2: document.getElementById('checkbox2').checked,
     }
 
+    // Message d'erreur
     errorMessage = {
       first: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
       last: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
@@ -22,6 +23,7 @@ class HandleForm {
       location: "Veuillez indiquer la ville de votre choix."
     }
 
+    // Regex pour chaque champs du formulaire
     regEx = {
       first: /^[a-zA-Z]{2,}$/,
       last: /^[a-zA-Z]{2,}$/,
@@ -35,17 +37,19 @@ class HandleForm {
   
     constructor(form) {
       this.form = form
-      for (let key in this.fields){
+      /* Boucle sur l'objet qui contient tout les id/name du formulaire pour pouvoir ensuite les manipuler a chaque changement */
+      for (let key in this.fields){ 
+        const element = document.querySelector(`input[name="${key}"]`).parentNode
         switch(key){
           case 'checkbox1': 
           case 'checkbox2': 
-            new FormField(document.getElementById(key), this.regEx[key], this.handleCheckbox.bind(this))
+            new FormField(element, this.regEx[key], this.handleCheckbox.bind(this))
             break
           case 'location':
-            new FormField(document.querySelector(`input[name="${key}"]`).parentNode, this.regEx[key], this.handleRadio.bind(this))
+            new FormField(element, this.regEx[key], this.handleRadio.bind(this))
             break
           default:
-            new FormField(document.querySelector(`input[name="${key}"]`).parentNode, this.regEx[key], this.checkRegex.bind(this))
+            new FormField(element, this.regEx[key], this.checkRegex.bind(this))
             break
         }
       }
@@ -67,7 +71,9 @@ class HandleForm {
           e.target.style.display = 'none'
           const modalValid = document.querySelector('.modal-valid')
           modalValid.style.display = "flex"
+          console.log(this.fields)
         }
+  
       })
     }
 
