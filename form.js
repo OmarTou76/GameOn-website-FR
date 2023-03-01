@@ -4,64 +4,59 @@ class HandleForm {
       first: {
         value: null,
         regex: /^[a-zA-Z]{2,}$/,
-        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom."
+        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
+        handler: this.checkRegex
       },
       last: {
         value: null,
         regex: /^[a-zA-Z]{2,}$/,
-        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+        errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
+        handler: this.checkRegex
       },
       email: {
         value: null,
         regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
         errorText: "Veuillez entrer une adresse email valide.",
+        handler: this.checkRegex
       },
       birthdate: {
         value: null,
         regex: /^\d{4}-\d{2}-\d{2}$/,
-        errorText: "Veuillez ajouter une date de naissance valide."
+        errorText: "Veuillez ajouter une date de naissance valide.",
+        handler: this.handleDate
       },
       quantity: {
         value: null,
         regex: /^\d+$/,
         errorText: "Veuillez indiquer le nombre de participation au tournoi.",
+        handler: this.checkRegex
       },
       location: {
         value: null,
         regex: null,
-        errorText: "Veuillez indiquer la ville de votre choix."
+        errorText: "Veuillez indiquer la ville de votre choix.",
+        handler: this.handleRadio
       },
       checkbox1: {
         value: document.getElementById('checkbox1').checked,
         regex: null,
         errorText: "Vous devez vérifier que vous acceptez les termes et conditions.",
+        handler: this.handleCheckbox
       },
       checkbox2: {
         value: document.getElementById('checkbox2').checked,
         regex: null,
         errorText: "",
+        handler: this.handleCheckbox
       }
     }
     constructor(form) {
       /* Boucle sur l'objet qui contient tout les id/name du formulaire pour pouvoir ensuite les manipuler a chaque changement */
       for (let key in this.fields){ 
         const element = document.querySelector(`input[name="${key}"]`).parentNode
-        switch(key){
-          case 'checkbox1': 
-          case 'checkbox2': 
-            this.onChange(element, this.fields[key].regex, this.handleCheckbox.bind(this))
-            break
-          case 'location':
-            this.onChange(element, this.fields[key].regex, this.handleRadio.bind(this))
-            break
-          case 'birthdate': 
-          this.onChange(element, this.fields[key].regex, this.handleDate.bind(this))
-            break
-          default:
-            this.onChange(element, this.fields[key].regex, this.checkRegex.bind(this))
-            break
-        }
+        this.onChange(element, this.fields[key].regex, this.fields[key].handler.bind(this))
       }
+      
       form.addEventListener('submit', (e) => {
         e.preventDefault()
         let canSubmit = true
