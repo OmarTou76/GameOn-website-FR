@@ -564,6 +564,10 @@ footer {
     right: 0;
     top: 0;
   }
+  .topnav{
+    margin: 3%;
+    margin-right: 1%;
+  }
   .topnav.responsive a {
     float: none;
     display: block;
@@ -580,8 +584,22 @@ footer {
 
   main {
     padding: 0px;
+    position: relative;
+    margin: 0;
   }
 
+  .hero-section{
+    margin: 0 3%;
+  }
+
+  .bground {
+    position: absolute;
+
+  }
+
+  .content{
+    margin: auto;
+  }
   .hero-content{
     padding: 0;
     min-width: auto;
