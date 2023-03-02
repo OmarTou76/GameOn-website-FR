@@ -1,3 +1,5 @@
+const form = document.querySelector('form')
+const modalValid = document.querySelector('.modal-valid')
 class HandleForm {
     // Tout les champs du formulaire
     fields = {
@@ -51,12 +53,11 @@ class HandleForm {
       }
     }
     constructor(form) {
-      /* Boucle sur l'objet qui contient tout les id/name du formulaire pour pouvoir ensuite les manipuler a chaque changement */
       for (let key in this.fields){ 
         const element = document.querySelector(`input[name="${key}"]`).parentNode
         this.onChange(element, this.fields[key].regex, this.fields[key].handler.bind(this))
       }
-      
+
       form.addEventListener('submit', (e) => {
         e.preventDefault()
         let canSubmit = true
@@ -136,6 +137,4 @@ class HandleForm {
 
 }
 
-
-const form = document.querySelector('form');
 new HandleForm(form)

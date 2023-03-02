@@ -222,6 +222,15 @@ input {
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
+
+.formData[data-succes-visible="true"]::after {
+  opacity: 1;
+}
+
+.formData[data-succes-visible="true"] .text-control {
+  border: 2px solid green;
+}
+
 /* 
 input[data-error]::after {
     content: attr(data-error);

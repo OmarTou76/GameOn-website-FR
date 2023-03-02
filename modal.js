@@ -32,6 +32,9 @@ function closeModal() {
   setTimeout(() => {
     modalbg.style.display = "none";
     animationHandler(closeAnimation)
+    form.reset()
+    form.style.display = "block"
+    modalValid.style.display = "none"
   }, ANIMATION_DURATION)
 }
 // Animation close modal
