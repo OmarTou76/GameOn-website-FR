@@ -411,7 +411,6 @@ input[data-error]::after {
   font-size: 16px;
 }
 .hero-section {
-  min-height: 93vh;
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -458,7 +457,7 @@ input[data-error]::after {
   font-size: 1.3rem;
   padding: 15px 23px;
   margin: 0;
-  margin-top: 59px;
+  margin-top: 9.5rem;
 }
 .hero-img {
   grid-column: span 8;
