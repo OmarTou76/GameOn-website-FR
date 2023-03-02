@@ -558,6 +558,13 @@ footer {
   }
 } 
 
+@media screen and (max-width: 950px) {
+  .hero-headline {
+    font-size: 5rem;
+  }
+}
+
+
 @media screen and (max-width: 768px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
@@ -603,13 +610,14 @@ footer {
   }
   .hero-content{
     padding: 0;
+    padding-right: .5rem;
     min-width: auto;
   }
   .hero-headline {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
   }
   .hero-text {
-    font-size: .8rem;
+    font-size: 1rem;
     margin-top: 2rem;
   }
   .topnav {
