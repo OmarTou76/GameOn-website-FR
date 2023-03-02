@@ -70,7 +70,6 @@ class HandleForm {
         }
         if (canSubmit){
           e.target.style.display = 'none'
-          const modalValid = document.querySelector('.modal-valid')
           modalValid.style.display = "flex"
           Object.keys(this.fields).forEach((key) => console.log({[key]: this.fields[key].value}))
         }
