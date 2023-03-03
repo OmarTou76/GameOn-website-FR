@@ -68,7 +68,7 @@ img {
   display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .topnav a {display: none;}
   .topnav a.icon {
     float: right;
@@ -561,10 +561,13 @@ footer {
   .hero-headline {
     font-size: 5rem;
   }
+  .hero-content{
+    padding-left: 50px;
+  }
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
