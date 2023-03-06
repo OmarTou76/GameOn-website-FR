@@ -32,12 +32,16 @@ function closeModal() {
   setTimeout(() => {
     modalbg.style.display = "none";
     animationHandler(closeAnimation)
+
+    // Reset le formulaire lorsque l'utilisateur ferme la modal
     form.reset()
     form.style.display = "block"
     modalValid.style.display = "none"
   }, ANIMATION_DURATION)
 }
-// Animation close modal
+
+// Animation close modal 
+// Fonction qui ajoute une animation ou reset l'animation si le champ animationName et duration ne sont pas remplit
 function animationHandler(element, animationName = '', duration = '') {
   element.style.animationName = animationName;
   element.style.animationDuration = duration ? `${duration}ms` : '';
