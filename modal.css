@@ -68,6 +68,10 @@ img {
   display: none;
 }
 
+.topnav.responsive .icon > i{
+  color: white;
+}
+
 @media screen and (max-width: 800px) {
   .topnav a {display: none;}
   .topnav a.icon {
