@@ -561,6 +561,9 @@ footer {
   .hero-headline {
     font-size: 5rem;
   }
+  .hero-text {
+    font-size: 1.3rem;
+  }
   .hero-content{
     padding-left: 50px;
   }
@@ -592,23 +595,12 @@ footer {
     height: 1.5rem;
   }
 
-  main {
-    padding: 0px;
-    position: relative;
-    margin: 0;
-  }
-
   .hero-section{
     margin: 0 3%;
   }
 
-  .bground {
-    position: absolute;
-
-  }
-
   .content{
-    margin: auto;
+    margin-top: 5rem;
   }
   .hero-content{
     padding: 0;
