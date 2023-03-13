@@ -591,6 +591,10 @@ footer {
     text-align: left;
   }
 
+  .bground {
+    height: 90%;
+  }
+
   .hero-section{
     min-height: auto;
   }
@@ -603,9 +607,6 @@ footer {
     margin: 0 3%;
   }
 
-  .content{
-    margin-top: 5rem;
-  }
   .hero-content{
     padding: 0;
     padding-right: .5rem;

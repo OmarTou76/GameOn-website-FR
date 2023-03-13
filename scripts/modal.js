@@ -15,6 +15,7 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const closeBtn = document.querySelectorAll('.closeModal')
 const closeAnimation = document.querySelector('.content')
+const form = document.querySelector('form')
 
 
 // launch modal event
@@ -28,7 +29,10 @@ function launchModal() {
 
 // Close modal form
 function closeModal() {
+  // Animation qui fait remonter la modal vers le haut et disparait
   animationHandler(closeAnimation, "closeModal", ANIMATION_DURATION)
+
+  // Timeout pour laisser le temps a l'animation de s'effectuer
   setTimeout(() => {
     modalbg.style.display = "none";
     animationHandler(closeAnimation)
