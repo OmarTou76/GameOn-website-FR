@@ -51,13 +51,13 @@ class HandleForm {
       handler: this.handleRadio
     },
     checkbox1: {
-      value: document.getElementById('checkbox1').checked,
+      value: true,
       regex: null,
       errorText: "Vous devez vérifier que vous acceptez les termes et conditions.",
       handler: this.handleCheckbox
     },
     checkbox2: {
-      value: document.getElementById('checkbox2').checked,
+      value: false,
       regex: null,
       errorText: "",
       handler: this.handleCheckbox
@@ -89,20 +89,25 @@ class HandleForm {
           this.addError(key, element)
         }
       })
-
-      // Si tout les champs sont ok, le formulaire disparait pour faire apparaitre le texte de validation
-      // Ecris dans la console le resultat du formulaire
+      // Si tout les champs sont ok, le formulaire disparait pour faire apparaitre le texte de validation 
+      // Ecris dans la console le resultat du formulaire et remet a l'etat initial les valeurs du formulaire
       if (canSubmit) {
         e.target.style.display = 'none'
         modalValid.style.display = "flex"
 
-        let result = {}
         Object.keys(this.fields).forEach((key) => {
-          result[key] = this.fields[key].value
-          //console.log({ [key]: this.fields[key].value })
-          this.fields[key].value = null
+          console.log({ [key]: this.fields[key].value })
+
+          if (key === "checkbox1") {
+            this.fields[key].value = true
+
+          } else if (key === "checkbox2") {
+            this.fields[key].value = false
+
+          } else {
+            this.fields[key].value = null
+          }
         })
-        console.log(result)
       }
     })
   }
@@ -114,6 +119,7 @@ class HandleForm {
 
   // Gere les Radios, met a jour la localisation.
   handleRadio(e) {
+    console.log(this.fields)
     this.fields.location.value = e.target.value
     this.removeAttribute(e.target.parentNode)
   }

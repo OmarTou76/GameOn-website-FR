@@ -16,7 +16,7 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const closeBtn = document.querySelectorAll('.closeModal')
 const closeAnimation = document.querySelector('.content')
 const myForm = document.querySelector('form')
-
+const validModal = document.querySelector('.modal-valid')
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -31,16 +31,18 @@ function launchModal() {
 function closeModal() {
   // Animation qui fait remonter la modal vers le haut et disparait
   animationHandler(closeAnimation, "closeModal", ANIMATION_DURATION)
+  myForm.reset()
 
   // Timeout pour laisser le temps a l'animation de s'effectuer
   setTimeout(() => {
     modalbg.style.display = "none";
+
+    //remet le style de l'element a l'etat initial
     animationHandler(closeAnimation)
 
     // Reset le formulaire lorsque l'utilisateur ferme la modal
-    myForm.reset()
     myForm.style.display = "block"
-    modalValid.style.display = "none"
+    validModal.style.display = "none"
   }, ANIMATION_DURATION)
 }
 
