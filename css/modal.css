@@ -33,6 +33,7 @@ img {
 .topnav {
   overflow: hidden;
   margin: 3.5%;
+  margin-right: 0;
 }
 .header-logo {
     float: left;
@@ -43,7 +44,7 @@ img {
 .topnav a {
   float: left;
   display: block;
-  color: #ff0000;
+  color: black;
   text-align: center;
   padding: 12px 12px;
   margin: 5px;
@@ -62,11 +63,13 @@ img {
   background-color: #ff0000;
   color: #ffffff;
   border-radius: 15px;
+  text-decoration: underline;
 }
 
 
 .topnav .icon {
   display: none;
+  color: #ff0000;
 }
 
 .topnav.responsive .icon > i{
@@ -90,7 +93,7 @@ main {
   padding-top: 0.5vw;
   padding-left: 2vw;
   padding-right: 2vw;
-  margin: 1px 20px 15px;
+  margin: 1px 10px 15px;
   border-radius: 2rem;
   text-align: justify;
 
@@ -420,7 +423,7 @@ input[data-error]::after {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   overflow: hidden;
-  box-shadow: 0 2px 7px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 7px 2px rgba(0, 0, 0, 0.4);
   margin-bottom: 10px;
 }
 .hero-content {
@@ -485,9 +488,8 @@ input[data-error]::after {
   display: none;
 }
 footer {
-  padding-left: 2vw;
   padding-right: 2vw;
-  margin: 0 20px;
+  margin: 0 10px;
 }
 @media screen and (max-width: 800px) {
   .hero-section {
@@ -582,7 +584,7 @@ footer {
     margin-left: 0;
     margin-right: 0;
   }
-  
+
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;

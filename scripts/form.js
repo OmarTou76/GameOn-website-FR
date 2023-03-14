@@ -107,7 +107,7 @@ class HandleForm {
         modalValid.style.display = "flex"
 
         Object.keys(this.fields).forEach((key) => {
-          console.log(key, " : ", this.fields[key].value)
+          console.log(key, ": ", this.fields[key].value)
 
           // Reset des valeurs de l'objet Fields
           if (key === "checkbox1") {
