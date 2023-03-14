@@ -3,16 +3,18 @@ const form = document.querySelector('form')
 const modalValid = document.querySelector('.modal-valid')
 
 
-// Classe qui gère / vérifie tout les champs du formulaire
+/**
+ * Classe qui gère l'ensemble du formulaire
+ */
 
 class HandleForm {
-  /* 
-      Objet avec les clés qui correspondent au tagName du champ de formulaire.
-        - Valeur par default null sauf pour les checkbox ou l'on recupère sa valeur dès le début.
-        - Regex pour verifier les champs de texte
-        - Un message d'erreur en cas de saisie incorrect
-        - Une fonction qui met a jour la clé value du champ, si la saisie de l'utilisateur est correct elle met a jour la valeur sinon elle ajoute le message d'erreur au champ en question. 
-   */
+  /**
+   * Objet avec les clés qui correspondent au tagName du champ de formulaire.
+   *  - valeur par default null ou booleen pour les checkbox.
+   *  - regex 
+   *  - Un message d'erreur
+   *  - Une fonction qui met a jour la valeur de l'objet disponible dans la classe
+  */
   fields = {
     first: {
       value: null,
@@ -63,10 +65,17 @@ class HandleForm {
       handler: this.handleCheckbox
     }
   }
-  constructor(form) {
 
-    // Boucle sur toutes les clés de l'objet fields, execute la fonction "onChange" qui attend un changement dans le champ concerné, avec comme arguments l'element du DOM concerné, le regex du champ et la fonction qui gère le champ.
+  /**
+   * 
+   * @param {HTMLElement} form : Le formulaire 
+   * @param {HTMLElement} modalValid : La modal a afficher lorsque le formulaire a été validé.
+   */
+  constructor(form, modalValid) {
 
+    /**
+     * Boucle sur toutes les clés de l'objet fields, execute la fonction "onChange" qui attend un changement dans le champ concerné, avec comme arguments l'element du DOM concerné, le regex du champ (si besoin) et la fonction qui gère le champ.
+    */
     Object.keys(this.fields).forEach((key) => {
       const element = document.querySelector(`input[name="${key}"]`).parentNode
       this.onChange(element, this.fields[key].regex, this.fields[key].handler.bind(this))
@@ -76,12 +85,13 @@ class HandleForm {
 
     form.addEventListener('submit', (e) => {
 
-      // Me permet de ne pas valider le formulaire avant d'avoir vérifier les valeurs
+      // Permet de ne pas valider le formulaire avant d'avoir vérifier les valeurs
       e.preventDefault()
 
       let canSubmit = true
 
-      // Boucle sur notre objet fields pour vérifier si la valeur est bien enregistrée et que les conditions sont acceptées, en cas d'erreur on ajoute au champs du texte et du css.
+      /* Boucle sur notre objet fields pour vérifier si la valeur est bien enregistrée et que les conditions sont acceptées, en cas d'erreur on ajoute au champs le message d'erreur. */
+
       Object.keys(this.fields).forEach((key) => {
         if (this.fields[key].value === null || (key === 'checkbox1' && !this.fields[key].value)) {
           canSubmit = false
@@ -89,15 +99,17 @@ class HandleForm {
           this.addError(key, element)
         }
       })
-      // Si tout les champs sont ok, le formulaire disparait pour faire apparaitre le texte de validation 
-      // Ecris dans la console le resultat du formulaire et remet a l'etat initial les valeurs du formulaire
+
+      /* Si tout les champs sont ok, le formulaire disparait pour afficher la modal de succès.
+      Affiche dans la console le resultat du formulaire et remet a l'etat initial les valeurs du formulaire */
       if (canSubmit) {
         e.target.style.display = 'none'
         modalValid.style.display = "flex"
 
         Object.keys(this.fields).forEach((key) => {
-          console.log({ [key]: this.fields[key].value })
+          console.log(key, " : ", this.fields[key].value)
 
+          // Reset des valeurs de l'objet Fields
           if (key === "checkbox1") {
             this.fields[key].value = true
 
@@ -112,18 +124,33 @@ class HandleForm {
     })
   }
 
-  // Ecoute le changement du champ pour verifier si la valeur est correcte
+  /**
+   * Ecoute le changement du champ pour verifier si la valeur est correcte a l'aide du regex et de la fonction donnés en paramètre.
+   * Ecoute 
+   * @param {HTMLElement} element : Le formulaire indiqué
+   * @param {Regex} regex : Le regex a vérfier si besoin
+   * @param {Function} handleField : La fonction qui definiera si la saisie est correcte.
+   */
   onChange(element, regex, handleField) {
     element.addEventListener('change', (e) => handleField(e, regex))
   }
 
-  // Gere les Radios, met a jour la localisation.
+  /**
+   * Ajoute la valeur la clé "location" de l'objet "Fields".
+   * Retire le message d'erreur si il a été ajouté.
+   * @param {HTMLElement} e : Element dans lequel on recupère le choix de l'utilisateur
+   */
   handleRadio(e) {
     this.fields.location.value = e.target.value
     this.removeAttribute(e.target.parentNode)
   }
 
-  // Gère le checkbox, ajoute une erreur lorsque les conditions d'utilisation ne sont pas coché.
+
+  /**
+   * Gère le checkbox, avec obligation de cocher le checkbox1 qui correspond au termes et conditions d'utilisations.
+   * Si les conditions ne sont pas cocher on ajoute du le message d'erreur et le css a l'element.
+   * @param {HTMLElement} e : Element dans lequel on recupère le choix de l'utilisateur
+   */
   handleCheckbox(e) {
     const { checked, id, parentNode: parent } = e.target
     if (id === 'checkbox1') {
@@ -136,7 +163,11 @@ class HandleForm {
     this.fields[id].value = checked
   }
 
-  // Gere les saisies de texte, teste la saisie de l'utilisateur grace au regex. Si elle est incorrect, ajoute du CSS et le message d'erreur en dessous sinon enregistre la valeur dans l'objet 
+  /**
+   * Gère la saisie de l'utilisateur, si la saisie est ok : l'enregistre dans l'objet sinon ajoute le message d'erreur et le CSS a l'element
+   * @param {HTMLElement} e : Element dans lequel on recupère la saisie de l'utilisateur.
+   * @param {Regex} reg : Regex a tester sur la saisie de l'utilisateur.
+   */
   handleTextByRegex(e, reg) {
     const { value, id, parentNode: parent } = e.target
     this.removeAttribute(parent)
@@ -151,7 +182,12 @@ class HandleForm {
     }
   }
 
-  // Gere le champ date, test d'abord le regex founit, verifie si la date fournit n'est pas supérieur a celle du jour.
+
+  /**
+   * Gère la saisie de l'utilisateur, si la date est mauvaise ou superieure a la date du jour, le message d'erreur s'affiche sinon on l'enregiste en format Date grace a l'Object Date.
+   * @param {HTMLElement} e : Element dans lequel on recupère la saisie de l'utilisateur.
+   * @param {Regex} reg : Regex a tester sur la saisie de l'utilisateur.
+   */
   handleDate(e, reg) {
     const { value, id, parentNode: parent } = e.target
     this.removeAttribute(parent)
@@ -168,14 +204,22 @@ class HandleForm {
     }
   }
 
-  // Retire le CSS et le texte au champ lorsque la saisie est correcte.
+  /**
+   * Retire le CSS et le message d'erreur au champ lorsque la saisie est correcte après avoir été incorrect.
+   * @param {HTMLElement} element : Element sur lequel on agir
+   */
   removeAttribute(element) {
     element.removeAttribute('data-error-visible')
     element.removeAttribute('data-error')
   }
 
   // Ajoute le CSS au champ et le texte en dessous grace au message d'erreur fournit dans l'objet de départ
-
+  /**
+   * Remet la valeur du champ en question a null.
+   * Ajoute le message d'erreur et les attributs CSS pour afficher a l'utilisateur qu'il s'est trompé.
+   * @param {string} id : id de l'element qui correspond au champ dans l'objet Field avec lequel on met a jour sa valeur et on recupère le message d'erreur.
+   * @param {HTMLElement} element : element sur lequel agir
+   */
   addError(id, element) {
     this.fields[id].value = null
     element.setAttribute('data-error-visible', true)
@@ -184,4 +228,4 @@ class HandleForm {
 
 }
 
-new HandleForm(form)
+new HandleForm(form, modalValid)
