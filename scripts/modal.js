@@ -31,11 +31,11 @@ function launchModal() {
 function closeModal() {
   // Animation qui fait remonter la modal vers le haut et disparait
   animationHandler(closeAnimation, "closeModal", ANIMATION_DURATION)
-  myForm.reset()
 
   // Timeout pour laisser le temps a l'animation de s'effectuer
   setTimeout(() => {
     modalbg.style.display = "none";
+    myForm.reset()
 
     //remet le style de l'element a l'etat initial
     animationHandler(closeAnimation)
