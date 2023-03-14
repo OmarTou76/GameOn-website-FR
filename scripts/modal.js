@@ -38,7 +38,7 @@ function closeModal() {
     animationHandler(closeAnimation)
 
     // Reset le formulaire lorsque l'utilisateur ferme la modal
-    myFor.reset()
+    myForm.reset()
     myForm.style.display = "block"
     modalValid.style.display = "none"
   }, ANIMATION_DURATION)
