@@ -15,7 +15,7 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const closeBtn = document.querySelectorAll('.closeModal')
 const closeAnimation = document.querySelector('.content')
-const form = document.querySelector('form')
+const myForm = document.querySelector('form')
 
 
 // launch modal event
@@ -38,8 +38,8 @@ function closeModal() {
     animationHandler(closeAnimation)
 
     // Reset le formulaire lorsque l'utilisateur ferme la modal
-    form.reset()
-    form.style.display = "block"
+    myFor.reset()
+    myForm.style.display = "block"
     modalValid.style.display = "none"
   }, ANIMATION_DURATION)
 }

@@ -18,19 +18,19 @@ class HandleForm {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
       errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
-      handler: this.checkRegex
+      handler: this.handleTextByRegex
     },
     last: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
       errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
-      handler: this.checkRegex
+      handler: this.handleTextByRegex
     },
     email: {
       value: null,
       regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
       errorText: "Veuillez entrer une adresse email valide.",
-      handler: this.checkRegex
+      handler: this.handleTextByRegex
     },
     birthdate: {
       value: null,
@@ -42,7 +42,7 @@ class HandleForm {
       value: null,
       regex: /^\d+$/,
       errorText: "Veuillez indiquer le nombre de participation au tournoi.",
-      handler: this.checkRegex
+      handler: this.handleTextByRegex
     },
     location: {
       value: null,
@@ -95,10 +95,14 @@ class HandleForm {
       if (canSubmit) {
         e.target.style.display = 'none'
         modalValid.style.display = "flex"
+
+        let result = {}
         Object.keys(this.fields).forEach((key) => {
-          console.log({ [key]: this.fields[key].value })
+          result[key] = this.fields[key].value
+          //console.log({ [key]: this.fields[key].value })
           this.fields[key].value = null
         })
+        console.log(result)
       }
     })
   }
@@ -128,7 +132,7 @@ class HandleForm {
   }
 
   // Gere les saisies de texte, teste la saisie de l'utilisateur grace au regex. Si elle est incorrect, ajoute du CSS et le message d'erreur en dessous sinon enregistre la valeur dans l'objet 
-  checkRegex(e, reg) {
+  handleTextByRegex(e, reg) {
     const { value, id, parentNode: parent } = e.target
     this.removeAttribute(parent)
     if (reg.test(value)) {
