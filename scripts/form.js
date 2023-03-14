@@ -13,56 +13,47 @@ class HandleForm {
    *  - valeur par default null ou booleen pour les checkbox.
    *  - regex 
    *  - Un message d'erreur
-   *  - Une fonction qui met a jour la valeur de l'objet disponible dans la classe
   */
   fields = {
     first: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
       errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
-      handler: this.handleTextByRegex
     },
     last: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
       errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
-      handler: this.handleTextByRegex
     },
     email: {
       value: null,
       regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
       errorText: "Veuillez entrer une adresse email valide.",
-      handler: this.handleTextByRegex
     },
     birthdate: {
       value: null,
       regex: /^\d{4}-\d{2}-\d{2}$/,
       errorText: "Veuillez ajouter une date de naissance valide.",
-      handler: this.handleDate
     },
     quantity: {
       value: null,
       regex: /^\d+$/,
       errorText: "Veuillez indiquer le nombre de participation au tournoi.",
-      handler: this.handleTextByRegex
     },
     location: {
       value: null,
       regex: null,
       errorText: "Veuillez indiquer la ville de votre choix.",
-      handler: this.handleRadio
     },
     checkbox1: {
       value: true,
       regex: null,
       errorText: "Vous devez vérifier que vous acceptez les termes et conditions.",
-      handler: this.handleCheckbox
     },
     checkbox2: {
       value: false,
       regex: null,
       errorText: "",
-      handler: this.handleCheckbox
     }
   }
 
@@ -74,11 +65,30 @@ class HandleForm {
   constructor(form, modalValid) {
 
     /**
-     * Boucle sur toutes les clés de l'objet fields, execute la fonction "onChange" qui attend un changement dans le champ concerné, avec comme arguments l'element du DOM concerné, le regex du champ (si besoin) et la fonction qui gère le champ.
+     * Boucle sur toutes les clés de l'objet fields, execute la fonction onChange qui elle executera la fonction que l'on lui donne en parametre
     */
     Object.keys(this.fields).forEach((key) => {
+
       const element = document.querySelector(`input[name="${key}"]`).parentNode
-      this.onChange(element, this.fields[key].regex, this.fields[key].handler.bind(this))
+
+      switch (key) {
+        case "checkbox1":
+        case "checkbox2":
+          this.onChange(element, this.fields[key].regex, this.handleCheckbox.bind(this))
+          break;
+
+        case 'location':
+          this.onChange(element, this.fields[key].regex, this.handleRadio.bind(this))
+          break;
+
+        case 'birthdate':
+          this.onChange(element, this.fields[key].regex, this.handleDate.bind(this))
+          break;
+
+        default:
+          this.onChange(element, this.fields[key].regex, this.handleTextByRegex.bind(this))
+          break;
+      }
     })
 
     // Ecoute lorsque l'utilisateur valide le formulaire
@@ -129,10 +139,11 @@ class HandleForm {
   /**
    * Ecoute le changement du champ pour verifier si la valeur est correcte a l'aide du regex et de la fonction donnés en paramètre.
    * Ecoute 
-   * @param {HTMLElement} element : Le formulaire indiqué
+   * @param {HTMLElement} element : Le champ indiqué
    * @param {Regex} regex : Le regex a vérfier si besoin
    * @param {Function} handleField : La fonction qui definiera si la saisie est correcte.
    */
+
   onChange(element, regex, handleField) {
     element.addEventListener('change', (e) => handleField(e, regex))
   }
@@ -142,6 +153,7 @@ class HandleForm {
    * Retire le message d'erreur si il a été ajouté.
    * @param {HTMLElement} e : Element dans lequel on recupère le choix de l'utilisateur
    */
+
   handleRadio(e) {
     this.fields.location.value = e.target.value
     this.removeAttribute(e.target.parentNode)
@@ -153,6 +165,7 @@ class HandleForm {
    * Si les conditions ne sont pas cocher on ajoute du le message d'erreur et le css a l'element.
    * @param {HTMLElement} e : Element dans lequel on recupère le choix de l'utilisateur
    */
+
   handleCheckbox(e) {
     const { checked, id, parentNode: parent } = e.target
     if (id === 'checkbox1') {
@@ -170,9 +183,13 @@ class HandleForm {
    * @param {HTMLElement} e : Element dans lequel on recupère la saisie de l'utilisateur.
    * @param {Regex} reg : Regex a tester sur la saisie de l'utilisateur.
    */
+
   handleTextByRegex(e, reg) {
+
     const { value, id, parentNode: parent } = e.target
+
     this.removeAttribute(parent)
+
     if (reg.test(value)) {
       if (id === "quantity") {
         this.fields[id].value = parseInt(value)
@@ -190,6 +207,7 @@ class HandleForm {
    * @param {HTMLElement} e : Element dans lequel on recupère la saisie de l'utilisateur.
    * @param {Regex} reg : Regex a tester sur la saisie de l'utilisateur.
    */
+
   handleDate(e, reg) {
     const { value, id, parentNode: parent } = e.target
     this.removeAttribute(parent)
@@ -210,6 +228,7 @@ class HandleForm {
    * Retire le CSS et le message d'erreur au champ lorsque la saisie est correcte après avoir été incorrect.
    * @param {HTMLElement} element : Element sur lequel on agir
    */
+
   removeAttribute(element) {
     element.removeAttribute('data-error-visible')
     element.removeAttribute('data-error')
@@ -222,6 +241,7 @@ class HandleForm {
    * @param {string} id : id de l'element qui correspond au champ dans l'objet Field avec lequel on met a jour sa valeur et on recupère le message d'erreur.
    * @param {HTMLElement} element : element sur lequel agir
    */
+
   addError(id, element) {
     this.fields[id].value = null
     element.setAttribute('data-error-visible', true)

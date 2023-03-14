@@ -11,9 +11,9 @@ const myForm = document.querySelector('form')
 const validModal = document.querySelector('.modal-valid')
 
 // Ecouteur d'evenement au clic
+iconNav.addEventListener('click', editNav)
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 closeBtn.forEach((btn) => btn.addEventListener('click', closeModal))
-iconNav.addEventListener('click', editNav)
 
 /**
  * Permet au header de la page d'etre responsive
@@ -44,12 +44,12 @@ function closeModal() {
   // Timeout pour laisser le temps a l'animation de s'effectuer
   setTimeout(() => {
     modalbg.style.display = "none";
-    myForm.reset()
 
     //remet le style de l'element a l'etat initial
     animationHandler(closeAnimation)
 
     // Reset le formulaire lorsque l'utilisateur ferme la modal
+    myForm.reset()
     myForm.style.display = "block"
     validModal.style.display = "none"
   }, ANIMATION_DURATION)
