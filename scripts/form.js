@@ -119,7 +119,6 @@ class HandleForm {
 
   // Gere les Radios, met a jour la localisation.
   handleRadio(e) {
-    console.log(this.fields)
     this.fields.location.value = e.target.value
     this.removeAttribute(e.target.parentNode)
   }
@@ -142,7 +141,11 @@ class HandleForm {
     const { value, id, parentNode: parent } = e.target
     this.removeAttribute(parent)
     if (reg.test(value)) {
-      this.fields[id].value = value
+      if (id === "quantity") {
+        this.fields[id].value = parseInt(value)
+      } else {
+        this.fields[id].value = value
+      }
     } else {
       this.addError(id, parent)
     }
