@@ -1,3 +1,20 @@
+// Variables
+const ANIMATION_DURATION = 300
+
+// DOM Elements
+const iconNav = document.querySelector(".icon");
+const modalbg = document.querySelector(".bground");
+const modalBtn = document.querySelectorAll(".modal-btn");
+const closeBtn = document.querySelectorAll('.closeModal')
+const closeAnimation = document.querySelector('.content')
+const myForm = document.querySelector('form')
+const validModal = document.querySelector('.modal-valid')
+
+// Ecouteur d'evenement au clic
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+closeBtn.forEach((btn) => btn.addEventListener('click', closeModal))
+iconNav.addEventListener('click', editNav)
+
 /**
  * Permet au header de la page d'etre responsive
  */
@@ -9,22 +26,6 @@ function editNav() {
     x.className = "topnav";
   }
 }
-
-// Variables
-const ANIMATION_DURATION = 300
-
-// DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const closeBtn = document.querySelectorAll('.closeModal')
-const closeAnimation = document.querySelector('.content')
-const myForm = document.querySelector('form')
-const validModal = document.querySelector('.modal-valid')
-
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-closeBtn.forEach((btn) => btn.addEventListener('click', closeModal))
-
 
 /**
  * Affiche la modal lorsque l'on clique sur le bouton "Je m'inscris"
@@ -61,7 +62,7 @@ function closeModal() {
  * @param {string} animationName : Le nom de l'animation crée en CSS au préalable.
  * @param {number} duration : La durée de l'animation
  */
-function animationHandler(element, animationName = '', duration = 0) {
+function animationHandler(element, animationName = '', duration = null) {
   element.style.animationName = animationName;
   element.style.animationDuration = duration === 0 ? `${duration}ms` : '';
 }
