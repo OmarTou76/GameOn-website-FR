@@ -574,6 +574,9 @@ footer {
   .hero-content{
     padding-left: 50px;
   }
+  .hero-content::after {
+    width: auto;
+  }
 }
 
 
