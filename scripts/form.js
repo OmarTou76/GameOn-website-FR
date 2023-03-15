@@ -18,12 +18,12 @@ class HandleForm {
     first: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
-      errorText: "Veuillez entrer 2 caractères ou plus pour le champ du prenom.",
+      errorText: "Le champ prénom doit contenir au moins 2 lettres et aucun chiffre.",
     },
     last: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
-      errorText: "Veuillez entrer 2 caractères ou plus pour le champ du nom.",
+      errorText: "Le champ prénom doit contenir au moins 2 lettres et aucun chiffre.",
     },
     email: {
       value: null,
