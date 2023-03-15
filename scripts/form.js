@@ -23,7 +23,7 @@ class HandleForm {
     last: {
       value: null,
       regex: /^[a-zA-Z]{2,}$/,
-      errorText: "Le champ prénom doit contenir au moins 2 lettres et aucun chiffre.",
+      errorText: "Le champ nom doit contenir au moins 2 lettres et aucun chiffre.",
     },
     email: {
       value: null,
