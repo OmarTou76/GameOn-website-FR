@@ -17,12 +17,12 @@ class HandleForm {
   fields = {
     first: {
       value: null,
-      regex: /^[a-zA-Z]{2,}$/,
+      regex: /^[\sa-zA-Z]{2,}$/,
       errorText: "Le champ prénom doit contenir au moins 2 lettres et aucun chiffre.",
     },
     last: {
       value: null,
-      regex: /^[a-zA-Z]{2,}$/,
+      regex: /^[\sa-zA-Z]{2,}$/,
       errorText: "Le champ nom doit contenir au moins 2 lettres et aucun chiffre.",
     },
     email: {
@@ -210,7 +210,9 @@ class HandleForm {
 
   handleDate(e, reg) {
     const { value, id, parentNode: parent } = e.target
+
     this.removeAttribute(parent)
+
     if (reg.test(value)) {
       const birth = new Date(value).getTime()
       const now = Date.now()
