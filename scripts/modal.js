@@ -1,11 +1,13 @@
 // Variables
 const ANIMATION_DURATION = 300
 
-// DOM Elements
+// Elements DOM ciblés
 const iconNav = document.querySelector(".icon");
-const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const closeBtn = document.querySelectorAll('.closeModal')
+const closeBtn = document.querySelector('.closeModal')
+const closeBtnValidForm = document.querySelector('.closeModalValid')
+
+const modalbg = document.querySelector(".bground");
 const closeAnimation = document.querySelector('.content')
 const myForm = document.querySelector('form')
 const validModal = document.querySelector('.modal-valid')
@@ -13,13 +15,17 @@ const validModal = document.querySelector('.modal-valid')
 // Ecouteur d'evenement au clic
 iconNav.addEventListener('click', editNav)
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-closeBtn.forEach((btn) => btn.addEventListener('click', closeModal))
+closeBtn.addEventListener('click', closeModal)
+closeBtnValidForm.addEventListener('click', () => {
+  closeModal()
+  myForm.reset()
+})
 
 /**
  * Permet au header de la page d'etre responsive
  */
 function editNav() {
-  var x = document.getElementById("myTopnav");
+  let x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
@@ -45,11 +51,11 @@ function closeModal() {
   setTimeout(() => {
     modalbg.style.display = "none";
 
-    //remet le style de l'element a l'etat initial
+    //remet le style de l'element a l'etat initial pour laisser place a l'animation d'ouverture
     animationHandler(closeAnimation)
 
     // Reset le formulaire lorsque l'utilisateur ferme la modal
-    myForm.reset()
+    //myForm.reset()
     myForm.style.display = "block"
     validModal.style.display = "none"
   }, ANIMATION_DURATION)
